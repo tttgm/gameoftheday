@@ -32,8 +32,8 @@ function SectionSubHeader(props) {
 function SingleDate(props) {
   return (
     <div className="single-date">
-      <p>{props.day}</p>
-      <p>{props.date}</p>
+        <p>{props.day}</p>
+        <p>{props.date}</p>
     </div>
   )
 }

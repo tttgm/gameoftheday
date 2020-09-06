@@ -1,3 +1,7 @@
+:root {
+  --accent: #F9CA2466
+}
+
 .App {
   text-align: center;
 }
@@ -12,10 +16,11 @@ p {
 }
 
 .single-date {
-  background: lightblue;
+  background: var(--accent);
+  border-radius: 5px;
   height: 40px;
   width: 40px;
-  padding: 0 5px;
+  padding: 2px 5px;
   margin: 5px;
 }
 
