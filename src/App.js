@@ -5,9 +5,9 @@ import './App.css';
 
 function MainHeader() {
   return (
-    <div>
+    <div className="main-header">
       <img src={logo} />
-      <p>your spoiler free guide to League Pass</p>
+      <p>your spoiler free guide to league pass</p>
     </div>
   )
 }
@@ -23,7 +23,9 @@ function SectionHeader(props) {
 
 function SectionSubHeader(props) {
   return (
-    <h4>{props.subtitle}</h4>
+    <div className="section-sub-header" >
+      <h4>{props.subtitle}</h4>
+    </div>
   )
 }
 
@@ -39,11 +41,14 @@ function SingleDate() {
 function DatePicker() {
   return (
     <div className="date-picker">
-      <h3>January</h3>
-      <SingleDate />
-      <SingleDate />
-      <SingleDate />
-      <SingleDate />
+      <h3 id="date-picker-title">January</h3>
+      <div className="date-items">
+        <SingleDate />
+        <SingleDate />
+        <SingleDate />
+        <SingleDate />
+        <SingleDate />
+      </div>
     </div>
   )
 }
@@ -54,7 +59,7 @@ function App() {
       <MainHeader />
       <DatePicker />
       <SectionHeader title="NBA" />
-      <SectionSubHeader subtitle="Tier 1 - Must Watch" />
+      <SectionSubHeader  subtitle="Tier 1 - Must Watch" />
       <div></div>
       <SectionSubHeader subtitle="Tier 2 - Worth a Watch" />
     </div>

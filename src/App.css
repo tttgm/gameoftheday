@@ -2,3 +2,39 @@
   text-align: center;
 }
 
+p {
+  font-weight: lighter;
+}
+
+.date-items {
+  display: flex;
+  justify-content: center;
+}
+
+.single-date {
+  background: lightblue;
+  padding: 0 5px;
+  margin: 5px;
+}
+
+.single-date > p {
+  margin: 0;
+}
+
+#date-picker-title {
+  font-weight: lighter;
+}
+
+.section-header {
+  display: flex;
+  justify-content: center;
+}
+
+.section-header {
+  display: flex;
+  justify-content: center;
+}
+
+.section-sub-header > h4 {
+  font-weight: lighter;
+}
