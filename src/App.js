@@ -6,7 +6,7 @@ import './App.css';
 function MainHeader() {
   return (
     <div className="main-header">
-      <img src={logo} />
+      <img src={logo} alt="Game of the Day logo"/>
       <p>your spoiler free guide to league pass</p>
     </div>
   )
@@ -15,7 +15,7 @@ function MainHeader() {
 function SectionHeader(props) {
   return (
     <div className="section-header">
-      <img src={chevrons} />
+      <img src={chevrons} alt="Arrows"/>
       <h2>{props.title}</h2>
     </div>
   )
@@ -56,7 +56,7 @@ function DatePicker() {
 function TeamBlock(props) {
   return (
     <div className="team-block">
-      <img src={require('./assets/nba-logos/' + props.teamLogo + '.gif')} />
+      <img src={require('./assets/nba-logos/' + props.teamLogo + '.gif')} alt="Team Logo"/>
       <p>{props.teamName}</p>
     </div>
   )
@@ -72,11 +72,31 @@ function GameBlock(props) {
   )
 }
 
-function App() {
-  return (
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: [],
+      isLoading: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+
+    fetch('http://127.0.0.1:5000/gotd/api/nba-games/2020-09-04')
+      .then(res => res.json())
+      .then(data => this.setState({ data: data, isLoading: false }));
+  }
+
+  render() {
+    return (
     <div className="App">
       <MainHeader />
-      <DatePicker />
+      {/* <DatePicker /> */}
+
+      <ul>{ this.state.isLoading ? "Loading..." : this.state.data.map(game => <li>{ game.MATCHUP }</li>) }</ul>
 
       <SectionHeader title="NBA" />
       <SectionSubHeader  subtitle="Tier 1 - Must Watch" />
@@ -100,7 +120,7 @@ function App() {
         teamLogo2="nuggets"
       />
     </div>
-  );
+  )};
 }
 
 export default App;
