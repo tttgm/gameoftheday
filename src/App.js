@@ -3,6 +3,13 @@ import logo from './assets/logo1.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
+// Date picker from react-dates (ref: https://github.com/airbnb/react-dates)
+import moment from 'moment';
+import 'react-dates/initialize';
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+
+
 function MainHeader() {
   return (
     <div className="main-header">
@@ -63,11 +70,14 @@ function TeamBlock(props) {
 }
 
 function GameBlock(props) {
+  let teamName1 = props.gameData.MATCHUP.slice(0,3)
+  let teamName2 = props.gameData.MATCHUP.slice(-3)
+
   return (
     <div className="game-block">
-      <TeamBlock teamName={props.teamName1} teamLogo={props.teamLogo1} />
+      <TeamBlock teamName={teamName1} teamLogo={teamName1} />
       <p>at</p>
-      <TeamBlock teamName={props.teamName2} teamLogo={props.teamLogo2} />
+      <TeamBlock teamName={teamName2} teamLogo={teamName2} />
     </div>
   )
 }
@@ -79,67 +89,69 @@ class App extends React.Component {
     this.state = {
       data: [],
       isLoading: false,
+      date: moment().subtract(1, 'days'), // initialize with the previous days date
     };
   }
 
-  componentDidMount() {
-    this.setState({ isLoading: true });
-
-    // Get today's date
-    var today = new Date();
-    var dd = String(today.getUTCDate() - 1).padStart(2, '0'); // Need to fix to get US timezone
-    var mm = String(today.getUTCMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getUTCFullYear();
-    let todayFormatted = yyyy + '-' + mm + '-' + dd;
-    console.log(todayFormatted);
-
-    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${todayFormatted}`)
+  fetchDaysGames() {
+    var dateSelected = this.state.date.format("YYYY-MM-DD");
+    // console.log(dateSelected);
+    
+    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ dateSelected }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
       .catch(err => console.log(err));
   }
 
+  componentDidMount() {
+    // set initial state
+    this.setState({ isLoading: true });
+
+    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
+      .then(res => res.json())
+      .then(data => this.setState({ data: data, isLoading: false }))
+      .catch(err => console.log(err));
+  }
+
+  componentDidUpdate() {
+    console.log('running');
+    this.fetchDaysGames();
+  }
+
   render() {
     const { todaysGames } = this.state.data;
+    const defaultDateProps = {
+      small: true,
+      numberOfMonths: 1,
+      keepOpenOnDateSelect: false,
+      isOutsideRange: () => false,
+    }
 
     return (
-    <div className="App">
-      <MainHeader />
-      {/* <DatePicker /> */}
+      <div className="App">
+        <MainHeader />
+        {/* <DatePicker /> */}
+        <SingleDatePicker
+          id="date-picker"
+          {...defaultDateProps}
+          date={this.state.date} // momentPropTypes.momentObj or null
+          onDateChange={date => this.setState({ date })}
+          focused={this.state.focused}
+          onFocusChange={({ focused }) => this.setState({ focused })}
+        />
+
+      <h3>Date: { this.state.date ? this.state.date.format("YYYY-MM-DD") : ''}</h3>
 
       <SectionHeader title="NBA" />
       <div>
         {this.state.isLoading ? "Loading..." :  this.state.data.map(
           game =>
             <GameBlock 
-              teamName1={game.MATCHUP.slice(0, 3)}
-              teamLogo1={game.MATCHUP.slice(0, 3)}
-              teamName2={game.MATCHUP.slice(-3)}
-              teamLogo2={game.MATCHUP.slice(-3)}
+              key={ game.GAME_ID }
+              gameData={ game }
             />
         )}
       </div>
-      
-      {/* <SectionSubHeader  subtitle="Tier 1 - Must Watch" />
-      <GameBlock 
-        teamName1="Miluakee Bucks"
-        teamLogo1="MIL"
-        teamName2="Boston Celtics"
-        teamLogo2="BOS"
-      />
-      <SectionSubHeader subtitle="Tier 2 - Worth a Watch" />
-      <GameBlock 
-        teamName1="Atlanta Hawks"
-        teamLogo1="ATL"
-        teamName2="Phoenix Suns"
-        teamLogo2="PHX"
-      />
-      <GameBlock 
-        teamName1="Oklahoma City Thunder"
-        teamLogo1="OKC"
-        teamName2="Denver Nuggets"
-        teamLogo2="DEN"
-      /> */}
     </div>
   )};
 }
