@@ -1,6 +1,6 @@
 :root {
   --darkest: #1E1E1E;
-  --accent: #F9CA2466;
+  --accent: #f9cb24;
   --accent2: #F0932B;
   --accent3: #EB4D4B;
   --charcoal: #383434;
@@ -22,7 +22,20 @@ p {
 }
 
 .single-date {
-  /* background: #fafafa; */
+  background: #ffffff;
+  border-radius: 3px;
+  border: 1px solid var(--darkest);
+  box-shadow: 0.25rem 0.25rem 0 var(--darkest);
+  height: 40px;
+  width: 40px;
+  padding: 2px 5px;
+  margin: 5px;
+}
+
+.selected-date {
+  background: var(--accent3);
+  color: white;
+  font-weight: bolder;
   border-radius: 3px;
   border: 1px solid var(--darkest);
   box-shadow: 0.25rem 0.25rem 0 var(--darkest);
@@ -33,6 +46,9 @@ p {
 }
 
 .single-date > p {
+  margin: 0;
+}
+.selected-date > p {
   margin: 0;
 }
 

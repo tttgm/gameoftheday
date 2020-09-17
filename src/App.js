@@ -3,14 +3,6 @@ import logo from './assets/logo1.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
-// Datetime library
-import moment from 'moment';
-
-// Date picker from react-dates (ref: https://github.com/airbnb/react-dates)
-// import 'react-dates/initialize';
-// import { SingleDatePicker } from 'react-dates';
-// import 'react-dates/lib/css/_datepicker.css';
-
 const DUMMY_NBA_GAMES_DATA = [
   {"GAME_DATE":"2020-08-22","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL"},
   {"GAME_DATE":"2020-08-22","GAME_ID":"0041900133","MATCHUP":"IND @ MIA"},
@@ -46,10 +38,10 @@ function SectionSubHeader(props) {
 
 function SingleDate(props) {
   return (
-    <div className="single-date">
-        <p>{props.day}</p>
-        <p>{props.date}</p>
-    </div>
+    <button className={props.isSelected ? "selected-date" : "single-date"} onClick={props.onClick}>
+      <p>{props.day}</p>
+      <p>{props.date}</p>
+    </button>
   )
 }
 
@@ -73,9 +65,15 @@ function DatePicker(props) {
     <div className="date-picker">
       <h3 id="date-picker-title">{ months[props.dateRange[0].getMonth()] }</h3>
       <div className="date-items">
-        {props.dateRange.reverse().map(
+        {props.dateRange.map(
           d =>
-          <SingleDate day={d.toDateString().split(' ')[0]} date={d.toDateString().split(' ')[2]} />
+          <SingleDate 
+            key={d.getTime()}
+            day={d.toDateString().split(' ')[0]} 
+            date={d.toDateString().split(' ')[2]} 
+            isSelected={d === props.dateSelected ? true : false}
+            onClick={() => props.onClick(d)}
+          />
         )}
       </div>
     </div>
@@ -115,14 +113,18 @@ class App extends React.Component {
       var date = new Date(new Date().setDate(new Date().getDate() - i));
       dateRange.push(date);
     };
+    // reverse the array to sort the dates in ascending order
+    dateRange.reverse();
 
     this.state = {
       // data: [],
       data: DUMMY_NBA_GAMES_DATA,
       isLoading: false,
-      date: dateRange[0],
+      date: dateRange[dateRange.length - 1],
       dateRange: dateRange,
     };
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
   }
 
   // componentDidMount() {
@@ -136,8 +138,12 @@ class App extends React.Component {
   // }
 
   componentDidUpdate() {
-    console.log('running');
+    console.log('component did update');
     // this.fetchDaysGames();
+  }
+
+  handleClick(d) {
+    this.setState({date: d});
   }
 
   render() {
@@ -146,22 +152,27 @@ class App extends React.Component {
     return (
       <div className="App">
         <MainHeader />
-        <DatePicker dateRange={this.state.dateRange} />
+        <DatePicker 
+          dateRange={this.state.dateRange}
+          dateSelected={this.state.date}
+          onClick={this.handleClick}
+        />
 
-      <h3>Selected: { this.state.date ? this.state.date.toDateString() : ''}</h3>
+        <h3>Selected: { this.state.date ? this.state.date.toDateString() : ''}</h3>
 
-      <SectionHeader title="NBA" />
-      <div>
-        {this.state.isLoading ? "Loading..." :  this.state.data.map(
-          game =>
-            <GameBlock 
-              key={ game.GAME_ID }
-              gameData={ game }
-            />
-        )}
+        <SectionHeader title="NBA" />
+        <div>
+          {this.state.isLoading ? "Loading..." :  this.state.data.map(
+            game =>
+              <GameBlock 
+                key={ game.GAME_ID }
+                gameData={ game }
+              />
+          )}
+        </div>
       </div>
-    </div>
-  )};
+    )
+  };
 }
 
 export default App;
