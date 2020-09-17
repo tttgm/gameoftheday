@@ -3,12 +3,20 @@ import logo from './assets/logo1.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
-// Date picker from react-dates (ref: https://github.com/airbnb/react-dates)
+// Datetime library
 import moment from 'moment';
-import 'react-dates/initialize';
-import { SingleDatePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 
+// Date picker from react-dates (ref: https://github.com/airbnb/react-dates)
+// import 'react-dates/initialize';
+// import { SingleDatePicker } from 'react-dates';
+// import 'react-dates/lib/css/_datepicker.css';
+
+const DUMMY_NBA_GAMES_DATA = [
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900133","MATCHUP":"IND @ MIA"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900173","MATCHUP":"HOU @ OKC"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900143","MATCHUP":"LAL @ POR"}
+]
 
 function MainHeader() {
   return (
@@ -45,16 +53,30 @@ function SingleDate(props) {
   )
 }
 
-function DatePicker() {
+function DatePicker(props) {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+
   return (
     <div className="date-picker">
-      <h3 id="date-picker-title">January</h3>
+      <h3 id="date-picker-title">{ months[props.dateRange[0].getMonth()] }</h3>
       <div className="date-items">
-        <SingleDate day="Mon" date={19} />
-        <SingleDate day="Tue" date={20} />
-        <SingleDate day="Wed" date={21} />
-        <SingleDate day="Thu" date={22} />
-        <SingleDate day="Fri" date={23} />
+        {props.dateRange.reverse().map(
+          d =>
+          <SingleDate day={d.toDateString().split(' ')[0]} date={d.toDateString().split(' ')[2]} />
+        )}
       </div>
     </div>
   )
@@ -86,61 +108,47 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    // Create array of last 5 days
+    let dateRange = [];
+    var i = 0;
+    for (i; i<5; i++) {
+      var date = new Date(new Date().setDate(new Date().getDate() - i));
+      dateRange.push(date);
+    };
+
     this.state = {
-      data: [],
+      // data: [],
+      data: DUMMY_NBA_GAMES_DATA,
       isLoading: false,
-      date: moment().subtract(1, 'days'), // initialize with the previous days date
+      date: dateRange[0],
+      dateRange: dateRange,
     };
   }
 
-  fetchDaysGames() {
-    var dateSelected = this.state.date.format("YYYY-MM-DD");
-    // console.log(dateSelected);
-    
-    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ dateSelected }`)
-      .then(res => res.json())
-      .then(data => this.setState({ data: data, isLoading: false }))
-      .catch(err => console.log(err));
-  }
+  // componentDidMount() {
+  //   // set initial state
+  //   this.setState({ isLoading: true });
 
-  componentDidMount() {
-    // set initial state
-    this.setState({ isLoading: true });
-
-    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
-      .then(res => res.json())
-      .then(data => this.setState({ data: data, isLoading: false }))
-      .catch(err => console.log(err));
-  }
+  //   fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
+  //     .then(res => res.json())
+  //     .then(data => this.setState({ data: data, isLoading: false }))
+  //     .catch(err => console.log(err));
+  // }
 
   componentDidUpdate() {
     console.log('running');
-    this.fetchDaysGames();
+    // this.fetchDaysGames();
   }
 
   render() {
     const { todaysGames } = this.state.data;
-    const defaultDateProps = {
-      small: true,
-      numberOfMonths: 1,
-      keepOpenOnDateSelect: false,
-      isOutsideRange: () => false,
-    }
 
     return (
       <div className="App">
         <MainHeader />
-        {/* <DatePicker /> */}
-        <SingleDatePicker
-          id="date-picker"
-          {...defaultDateProps}
-          date={this.state.date} // momentPropTypes.momentObj or null
-          onDateChange={date => this.setState({ date })}
-          focused={this.state.focused}
-          onFocusChange={({ focused }) => this.setState({ focused })}
-        />
+        <DatePicker dateRange={this.state.dateRange} />
 
-      <h3>Date: { this.state.date ? this.state.date.format("YYYY-MM-DD") : ''}</h3>
+      <h3>Selected: { this.state.date ? this.state.date.toDateString() : ''}</h3>
 
       <SectionHeader title="NBA" />
       <div>

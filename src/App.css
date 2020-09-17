@@ -1,5 +1,10 @@
 :root {
-  --accent: #F9CA2466
+  --darkest: #1E1E1E;
+  --accent: #F9CA2466;
+  --accent2: #F0932B;
+  --accent3: #EB4D4B;
+  --charcoal: #383434;
+  --lightcharcoal: #615a5a;
 }
 
 .App {
@@ -17,8 +22,10 @@ p {
 }
 
 .single-date {
-  background: var(--accent);
-  border-radius: 5px;
+  /* background: #fafafa; */
+  border-radius: 3px;
+  border: 1px solid var(--darkest);
+  box-shadow: 0.25rem 0.25rem 0 var(--darkest);
   height: 40px;
   width: 40px;
   padding: 2px 5px;
@@ -31,6 +38,7 @@ p {
 
 #date-picker-title {
   font-weight: lighter;
+  margin: auto;
 }
 
 .section-header {
