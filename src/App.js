@@ -96,7 +96,7 @@ function GameBlock(props) {
   return (
     <div className="game-block">
       <TeamBlock teamName={teamName1} teamLogo={teamName1} />
-      <p>at</p>
+      <p class="game-at-sign">at</p>
       <TeamBlock teamName={teamName2} teamLogo={teamName2} />
     </div>
   )
@@ -185,6 +185,7 @@ class App extends React.Component {
                 gameData={ game }
               />
           )}
+          { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : ''}
         </div>
       </div>
     )

@@ -81,6 +81,10 @@ p {
   padding: 5px 10px;
 }
 
+.game-at-sign {
+  font-size: 22px;
+}
+
 .team-block {
   width: 200px;
 }
