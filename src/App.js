@@ -117,8 +117,8 @@ class App extends React.Component {
     dateRange.reverse();
 
     this.state = {
-      // data: [],
-      data: DUMMY_NBA_GAMES_DATA,
+      data: [],
+      // data: DUMMY_NBA_GAMES_DATA,
       isLoading: false,
       date: dateRange[dateRange.length - 1],
       dateRange: dateRange,
@@ -132,11 +132,22 @@ class App extends React.Component {
     return `${yyyy}-${mm}-${dd}`
   }
 
-  componentDidMount() {
+  fetchDaysGames(date) {
     // set initial state
     this.setState({ isLoading: true });
 
-    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
+    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
+      .then(res => res.json())
+      .then(data => this.setState({ data: data, isLoading: false }))
+      .catch(err => console.log(err));
+  }
+
+  componentDidMount() {
+    this.fetchDaysGames(this.state.date);
+    // // set initial state
+    // this.setState({ isLoading: true });
+
+    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(this.state.date) }`)
     //   .then(res => res.json())
     //   .then(data => this.setState({ data: data, isLoading: false }))
     //   .catch(err => console.log(err));
@@ -144,11 +155,11 @@ class App extends React.Component {
 
   componentDidUpdate() {
     console.log('component did update');
-    // this.fetchDaysGames();
   }
 
   handleClick(d) {
     this.setState({date: d});
+    this.fetchDaysGames(d);
   }
 
   render() {
