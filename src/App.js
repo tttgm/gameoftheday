@@ -127,15 +127,20 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // componentDidMount() {
-  //   // set initial state
-  //   this.setState({ isLoading: true });
+  formatDate(dateObj) {
+    let [dd, mm, yyyy] = dateObj.toLocaleDateString().split('/');
+    return `${yyyy}-${mm}-${dd}`
+  }
 
-  //   fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
-  //     .then(res => res.json())
-  //     .then(data => this.setState({ data: data, isLoading: false }))
-  //     .catch(err => console.log(err));
-  // }
+  componentDidMount() {
+    // set initial state
+    this.setState({ isLoading: true });
+
+    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.state.date }`)
+    //   .then(res => res.json())
+    //   .then(data => this.setState({ data: data, isLoading: false }))
+    //   .catch(err => console.log(err));
+  }
 
   componentDidUpdate() {
     console.log('component did update');
@@ -158,7 +163,7 @@ class App extends React.Component {
           onClick={this.handleClick}
         />
 
-        <h3>Selected: { this.state.date ? this.state.date.toDateString() : ''}</h3>
+        <p>Selected: { this.state.date ? this.formatDate(this.state.date) : ''}</p>
 
         <SectionHeader title="NBA" />
         <div>
