@@ -16,6 +16,10 @@ p {
   font-weight: lighter;
 }
 
+.main-header > p {
+  margin-top: 0;
+}
+
 .date-items {
   display: flex;
   justify-content: center;
