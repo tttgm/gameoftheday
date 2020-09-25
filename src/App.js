@@ -4,10 +4,10 @@ import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
 const DUMMY_NBA_GAMES_DATA = [
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900133","MATCHUP":"IND @ MIA"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900173","MATCHUP":"HOU @ OKC"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900143","MATCHUP":"LAL @ POR"}
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL","GAME_SCORE":"2","GAME_TIER":"2"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900133","MATCHUP":"IND @ MIA","GAME_SCORE":"4","GAME_TIER":"1"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900173","MATCHUP":"HOU @ OKC","GAME_SCORE":"0","GAME_TIER":"3"},
+  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900143","MATCHUP":"LAL @ POR","GAME_SCORE":"1","GAME_TIER":"2"}
 ]
 
 function MainHeader() {
@@ -102,6 +102,21 @@ function GameBlock(props) {
   )
 }
 
+function TierBlock(props) {
+  return (
+    props.data.filter(
+      game => game.GAME_TIER == props.tier
+    ).length == 0 ? "" : props.data.filter(
+      game => game.GAME_TIER == props.tier
+    ).map(game => 
+      <>
+        <SectionSubHeader subtitle={ props.subtitle }/>
+        <GameBlock key={ game.GAME_ID } gameData={ game }/>
+      </>
+    )
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -136,7 +151,7 @@ class App extends React.Component {
     // set initial state
     this.setState({ isLoading: true });
 
-    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
+    fetch(`http://127.0.0.1:5000/gotd/api/games-ranked/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
       .catch(err => console.log(err));
@@ -144,13 +159,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.fetchDaysGames(this.state.date);
-    // // set initial state
-    // this.setState({ isLoading: true });
-
-    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(this.state.date) }`)
-    //   .then(res => res.json())
-    //   .then(data => this.setState({ data: data, isLoading: false }))
-    //   .catch(err => console.log(err));
   }
 
   componentDidUpdate() {
@@ -163,8 +171,6 @@ class App extends React.Component {
   }
 
   render() {
-    const { todaysGames } = this.state.data;
-
     return (
       <div className="App">
         <MainHeader />
@@ -178,14 +184,14 @@ class App extends React.Component {
 
         <SectionHeader title="NBA" />
         <div>
-          {this.state.isLoading ? "Loading..." :  this.state.data.map(
-            game =>
-              <GameBlock 
-                key={ game.GAME_ID }
-                gameData={ game }
-              />
-          )}
-          { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : ''}
+          {this.state.isLoading ? "Loading..." : 
+            <>
+              <TierBlock data={this.state.data} subtitle="Tier 1 - Must watch" tier="1" />
+              <TierBlock data={this.state.data} subtitle="Tier 2 - Worth a watch" tier="2" />
+              <TierBlock data={this.state.data} subtitle="Tier 3 - Can probably skip" tier="3" />
+            </>
+          }
+          { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
         </div>
       </div>
     )
