@@ -61,6 +61,16 @@ function DatePicker(props) {
     'December'
   ]
 
+  const weekdays = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun",
+  ]
+
   return (
     <div className="date-picker">
       <h3 id="date-picker-title">{ months[props.dateRange[0].getMonth()] }</h3>
@@ -69,8 +79,8 @@ function DatePicker(props) {
           d =>
           <SingleDate 
             key={d.getTime()}
-            day={d.toDateString().split(' ')[0]} 
-            date={d.toDateString().split(' ')[2]} 
+            day={weekdays[d.getDay()]} 
+            date={d.getDate()} 
             isSelected={d === props.dateSelected ? true : false}
             onClick={() => props.onClick(d)}
           />
@@ -143,7 +153,10 @@ class App extends React.Component {
   }
 
   formatDate(dateObj) {
-    let [dd, mm, yyyy] = dateObj.toLocaleDateString().split('/');
+    let [dd, mm, yyyy] = dateObj.toLocaleDateString(
+      'en-AU', 
+      { timeZone: 'America/New_York' }
+    ).split('/');
     return `${yyyy}-${mm}-${dd}`
   }
 
@@ -179,8 +192,6 @@ class App extends React.Component {
           dateSelected={this.state.date}
           onClick={this.handleClick}
         />
-
-        <p>Selected: { this.state.date ? this.formatDate(this.state.date) : ''}</p>
 
         <SectionHeader title="NBA" />
         <div>
