@@ -4,11 +4,44 @@ import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
 const DUMMY_NBA_GAMES_DATA = [
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL","GAME_SCORE":"2","GAME_TIER":"2"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900133","MATCHUP":"IND @ MIA","GAME_SCORE":"4","GAME_TIER":"1"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900173","MATCHUP":"HOU @ OKC","GAME_SCORE":"0","GAME_TIER":"3"},
-  {"GAME_DATE":"2020-08-22","GAME_ID":"0041900143","MATCHUP":"LAL @ POR","GAME_SCORE":"1","GAME_TIER":"2"}
+  {"GAME_DATE":"2020-12-16","GAME_ID":"0041900103","MATCHUP":"MIL @ ORL","GAME_SCORE":"2","GAME_TIER":"2"},
+  {"GAME_DATE":"2020-12-16","GAME_ID":"0041900133","MATCHUP":"IND @ MIA","GAME_SCORE":"4","GAME_TIER":"1"},
+  {"GAME_DATE":"2020-12-16","GAME_ID":"0041900173","MATCHUP":"HOU @ OKC","GAME_SCORE":"0","GAME_TIER":"3"},
+  {"GAME_DATE":"2020-12-16","GAME_ID":"0041900143","MATCHUP":"LAL @ POR","GAME_SCORE":"1","GAME_TIER":"2"}
 ]
+
+const TEAM_NAME_ABBREV = {
+  "ATLANTA_HAWKS": "ATL",
+  "BROOKLYN_NETS": "BKN",
+  "BOSTON_CELTICS": "BOS",
+  "CHARLOTTE_HORNETS": "CHA",
+  "CHICAGO_BULLS": "CHI",
+  "CLEVELAND_CAVALIERS": "CLE",
+  "DALLAS_MAVERICKS": "DAL",
+  "DENVER_NUGGETS": "DEN",
+  "DETROIT_PISTONS": "DET",
+  "GOLDEN_STATE_WARRIORS": "GSW",
+  "HOUSTON_ROCKETS": "HOU",
+  "INDIANA_PACERS": "IND",
+  "LOS_ANGELES_CLIPPERS": "LAC",
+  "LOS_ANGELES_LAKERS": "LAL",
+  "MEMPHIS_GRIZZLIES": "MEM",
+  "MIAMI_HEAT": "MIA",
+  "MILWAUKEE_BUCKS": "MIL",
+  "MINNESOTA_TIMBERWOLVES": "MIN",
+  "NEW_ORLEANS_PELICANS": "NOR",
+  "NEW_YORK_KNICKS": "NYK",
+  "OKLAHOMA_CITY_THUNDER": "OKC",
+  "ORLANDO_MAGIC": "ORL",
+  "PHILADELPHIA_76ERS": "PHI",
+  "PHOENIX_SUNS": "PHX",
+  "PORTLAND_TRAIL_BLAZERS": "POR",
+  "SACRAMENTO_KINGS": "SAC",
+  "SAN_ANTONIO_SPURS": "SAS",
+  "TORONTO_RAPTORS": "TOR",
+  "UTAH_JAZZ": "UTA",
+  "WASHINGTON_WIZARDS": "WAS"
+}
 
 function MainHeader() {
   return (
@@ -100,8 +133,8 @@ function TeamBlock(props) {
 }
 
 function GameBlock(props) {
-  let teamName1 = props.gameData.MATCHUP.slice(0,3)
-  let teamName2 = props.gameData.MATCHUP.slice(-3)
+  let teamName1 = TEAM_NAME_ABBREV[props.gameData.away_team]
+  let teamName2 = TEAM_NAME_ABBREV[props.gameData.home_team]
 
   return (
     <div className="game-block">
@@ -115,13 +148,13 @@ function GameBlock(props) {
 function TierBlock(props) {
   return (
     props.data.filter(
-      game => game.GAME_TIER == props.tier
+      game => game.game_tier == props.tier
     ).length == 0 ? "" : props.data.filter(
-      game => game.GAME_TIER == props.tier
+      game => game.game_tier == props.tier
     ).map(game => 
       <>
         <SectionSubHeader subtitle={ props.subtitle }/>
-        <GameBlock key={ game.GAME_ID } gameData={ game }/>
+        <GameBlock key={ game.home_team } gameData={ game }/>
       </>
     )
   )
@@ -146,6 +179,7 @@ class App extends React.Component {
       // data: DUMMY_NBA_GAMES_DATA,
       isLoading: false,
       date: dateRange[dateRange.length - 1],
+      // date: new Date('2020-09-03'),
       dateRange: dateRange,
     };
     // This binding is necessary to make `this` work in the callback
@@ -164,7 +198,7 @@ class App extends React.Component {
     // set initial state
     this.setState({ isLoading: true });
 
-    fetch(`http://127.0.0.1:5000/gotd/api/games-ranked/${ this.formatDate(date) }`)
+    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
       .catch(err => console.log(err));
