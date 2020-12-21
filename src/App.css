@@ -20,6 +20,10 @@ p {
   margin-top: 0;
 }
 
+.main-header > img {
+  max-width: 90%;
+}
+
 .date-items {
   display: flex;
   justify-content: center;
