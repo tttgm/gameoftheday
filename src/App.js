@@ -178,8 +178,8 @@ class App extends React.Component {
       data: [],
       // data: DUMMY_NBA_GAMES_DATA,
       isLoading: false,
-      // date: dateRange[dateRange.length - 1],
-      date: new Date('2020-09-03'),
+      date: dateRange[dateRange.length - 1],
+      // date: new Date('2020-09-03'),
       dateRange: dateRange,
     };
     // This binding is necessary to make `this` work in the callback
@@ -198,6 +198,7 @@ class App extends React.Component {
     // set initial state
     this.setState({ isLoading: true });
 
+    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
     fetch(`https://gameoftheday-api.herokuapp.com/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
