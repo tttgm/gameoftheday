@@ -95,13 +95,13 @@ function DatePicker(props) {
   ]
 
   const weekdays = [
+    "Sun",
     "Mon",
     "Tue",
     "Wed",
     "Thu",
     "Fri",
-    "Sat",
-    "Sun",
+    "Sat"
   ]
 
   return (
