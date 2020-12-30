@@ -72,13 +72,8 @@ p {
   justify-content: center;
 }
 
-.section-header {
-  display: flex;
-  justify-content: center;
-}
-
 .section-sub-header > h3 {
-  font-weight: lighter;
+  font-weight: normal;
 }
 
 .game-block {
@@ -93,6 +88,7 @@ p {
 
 .game-at-sign {
   font-size: 22px;
+  margin-top: 0;
 }
 
 .team-block {

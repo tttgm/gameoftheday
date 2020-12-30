@@ -151,9 +151,11 @@ function TierBlock(props) {
       game => game.game_tier == props.tier
     ).length == 0 ? "" : props.data.filter(
       game => game.game_tier == props.tier
-    ).map(game => 
+    ).sort(
+      (a,b) => (a.game_score < b.game_score) ? 1 : -1
+    ).map((game, idx) => 
       <>
-        <SectionSubHeader subtitle={ props.subtitle }/>
+        <SectionSubHeader subtitle={ idx===0 ? props.subtitle : ""}/>
         <GameBlock key={ game.home_team } gameData={ game }/>
       </>
     )
@@ -198,8 +200,8 @@ class App extends React.Component {
     // set initial state
     this.setState({ isLoading: true });
 
-    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
-    fetch(`https://gameoftheday-api.herokuapp.com/gotd/api/nba-games/${ this.formatDate(date) }`)
+    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
+    // fetch(`https://gameoftheday-api.herokuapp.com/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
       .catch(err => console.log(err));
