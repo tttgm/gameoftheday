@@ -200,8 +200,8 @@ class App extends React.Component {
     // set initial state
     this.setState({ isLoading: true });
 
-    fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
-    // fetch(`https://gameoftheday-api.herokuapp.com/gotd/api/nba-games/${ this.formatDate(date) }`)
+    // fetch(`http://127.0.0.1:5000/gotd/api/nba-games/${ this.formatDate(date) }`)
+    fetch(`https://gameoftheday-api.herokuapp.com/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
       .catch(err => console.log(err));
