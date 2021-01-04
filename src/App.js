@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment-timezone';
 import logo from './assets/logo1.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
@@ -106,14 +107,14 @@ function DatePicker(props) {
 
   return (
     <div className="date-picker">
-      <h3 id="date-picker-title">{ months[props.dateRange[0].getMonth()] }</h3>
+      <h3 id="date-picker-title">{ months[props.dateRange[4].month()] }</h3>
       <div className="date-items">
         {props.dateRange.map(
           d =>
           <SingleDate 
-            key={d.getTime()}
-            day={weekdays[d.getDay()]} 
-            date={d.getDate()} 
+            key={d}
+            day={weekdays[d.day()]} 
+            date={d.date()} 
             isSelected={d === props.dateSelected ? true : false}
             onClick={() => props.onClick(d)}
           />
@@ -139,7 +140,7 @@ function GameBlock(props) {
   return (
     <div className="game-block">
       <TeamBlock teamName={teamName1} teamLogo={teamName1} />
-      <p class="game-at-sign">at</p>
+      <p className="game-at-sign">at</p>
       <TeamBlock teamName={teamName2} teamLogo={teamName2} />
     </div>
   )
@@ -149,9 +150,7 @@ function TierBlock(props) {
   return (
     props.data.filter(
       game => game.game_tier == props.tier
-    ).length == 0 ? "" : props.data.filter(
-      game => game.game_tier == props.tier
-    ).sort(
+    ).length == 0 ? "" : props.data.sort(
       (a,b) => (a.game_score < b.game_score) ? 1 : -1
     ).map((game, idx) => 
       <>
@@ -171,10 +170,12 @@ class App extends React.Component {
     var i = 0;
     for (i; i<5; i++) {
       var date = new Date(new Date().setDate(new Date().getDate() - i));
-      dateRange.push(date);
+      var date_ny = moment(date).tz('America/New_York')
+      dateRange.push(date_ny);
     };
     // reverse the array to sort the dates in ascending order
     dateRange.reverse();
+    console.log(dateRange);
 
     this.state = {
       data: [],
@@ -189,11 +190,7 @@ class App extends React.Component {
   }
 
   formatDate(dateObj) {
-    let [dd, mm, yyyy] = dateObj.toLocaleDateString(
-      'en-AU', 
-      { timeZone: 'America/New_York' }
-    ).split('/');
-    return `${yyyy}-${mm}-${dd}`
+    return dateObj.format('YYYY-MM-DD');
   }
 
   fetchDaysGames(date) {
@@ -209,10 +206,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.fetchDaysGames(this.state.date);
-  }
-
-  componentDidUpdate() {
-    console.log('component did update');
   }
 
   handleClick(d) {
@@ -234,9 +227,10 @@ class App extends React.Component {
         <div>
           {this.state.isLoading ? "Loading..." : 
             <>
-              <TierBlock data={this.state.data} subtitle="Tier 1 - Must watch" tier="1" />
-              <TierBlock data={this.state.data} subtitle="Tier 2 - Worth a watch" tier="2" />
-              <TierBlock data={this.state.data} subtitle="Tier 3 - Can probably skip" tier="3" />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" tier="1" />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch" tier="2"  />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 3)} subtitle="Tier 3 - Can probably skip" tier="3" />
+              <TierBlock data={this.state.data.filter(game => game.status !== "available" )} subtitle="Waiting on data" tier="" />
             </>
           }
           { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
