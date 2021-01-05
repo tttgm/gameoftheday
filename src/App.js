@@ -161,6 +161,20 @@ function TierBlock(props) {
   )
 }
 
+function StatusBlock(props) {
+  return (
+    props.data.filter(
+      game => game.status == props.status
+    ).length == 0 ? "" : props.data.map(
+      (game, idx) => 
+      <>
+        <SectionSubHeader subtitle={ idx===0 ? props.subtitle : ""}/>
+        <GameBlock key={ game.home_team } gameData={ game }/>
+      </>
+    )
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -175,7 +189,7 @@ class App extends React.Component {
     };
     // reverse the array to sort the dates in ascending order
     dateRange.reverse();
-    console.log(dateRange);
+    // console.log(dateRange);
 
     this.state = {
       data: [],
@@ -230,7 +244,8 @@ class App extends React.Component {
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" tier="1" />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch" tier="2"  />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 3)} subtitle="Tier 3 - Can probably skip" tier="3" />
-              <TierBlock data={this.state.data.filter(game => game.status !== "available" )} subtitle="Waiting on data" tier="" />
+              <StatusBlock data={this.state.data.filter(game => game.status === "na")} subtitle="Waiting on game data" status="na" />
+              <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" />
             </>
           }
           { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
