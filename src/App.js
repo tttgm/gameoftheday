@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import logo from './assets/logo1.png';
+import backnextseason from './assets/back-next-season.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
@@ -49,6 +50,14 @@ function MainHeader() {
     <div className="main-header">
       <img src={logo} alt="Game of the Day logo"/>
       <p>your spoiler free guide to league pass</p>
+    </div>
+  )
+}
+
+function BackNextSeason() {
+  return (
+    <div className="placeholder">
+      <img src={backnextseason} alt="Back next season"/>
     </div>
   )
 }
@@ -231,14 +240,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <MainHeader />
-        <DatePicker 
+        {/* <DatePicker 
           dateRange={this.state.dateRange}
           dateSelected={this.state.date}
           onClick={this.handleClick}
-        />
+        /> */}
 
         <SectionHeader title="NBA" />
-        <div>
+        <BackNextSeason />
+        {/* <div>
           {this.state.isLoading ? "Loading..." : 
             <>
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" tier="1" />
@@ -249,7 +259,7 @@ class App extends React.Component {
             </>
           }
           { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
-        </div>
+        </div> */}
       </div>
     )
   };
