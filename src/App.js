@@ -240,15 +240,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <MainHeader />
-        {/* <DatePicker 
+        <DatePicker 
           dateRange={this.state.dateRange}
           dateSelected={this.state.date}
           onClick={this.handleClick}
-        /> */}
+        />
 
         <SectionHeader title="NBA" />
-        <BackNextSeason />
-        {/* <div>
+        {/* <BackNextSeason /> */}
+        <div>
           {this.state.isLoading ? "Loading..." : 
             <>
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" tier="1" />
@@ -259,7 +259,7 @@ class App extends React.Component {
             </>
           }
           { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
-        </div> */}
+        </div>
       </div>
     )
   };
