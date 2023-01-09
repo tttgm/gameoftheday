@@ -270,7 +270,11 @@ class App extends React.Component {
 
         <SectionHeader title="NBA" />
         <div>
-          {this.state.isLoading ? "Loading..." : 
+          {this.state.isLoading ? 
+            <>
+              <img className='loader-image' style={{height: "40vh", width: "auto"}} src={require('./assets/bball-spin.gif')} alt="Loading"/>
+              <p>Loading...</p>
+            </> : 
             <>
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch"  />
