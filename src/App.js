@@ -1,105 +1,72 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import logo from './assets/logo1.png';
-import backnextseason from './assets/back-next-season.png';
+// import backnextseason from './assets/back-next-season.png';
 import chevrons from './assets/chevrons-down.svg';
 import './App.css';
 
-const TEAM_NAME_ABBREV = {
-  "ATLANTA_HAWKS": "ATL",
-  "BROOKLYN_NETS": "BKN",
-  "BOSTON_CELTICS": "BOS",
-  "CHARLOTTE_HORNETS": "CHA",
-  "CHICAGO_BULLS": "CHI",
-  "CLEVELAND_CAVALIERS": "CLE",
-  "DALLAS_MAVERICKS": "DAL",
-  "DENVER_NUGGETS": "DEN",
-  "DETROIT_PISTONS": "DET",
-  "GOLDEN_STATE_WARRIORS": "GSW",
-  "HOUSTON_ROCKETS": "HOU",
-  "INDIANA_PACERS": "IND",
-  "LOS_ANGELES_CLIPPERS": "LAC",
-  "LOS_ANGELES_LAKERS": "LAL",
-  "MEMPHIS_GRIZZLIES": "MEM",
-  "MIAMI_HEAT": "MIA",
-  "MILWAUKEE_BUCKS": "MIL",
-  "MINNESOTA_TIMBERWOLVES": "MIN",
-  "NEW_ORLEANS_PELICANS": "NOR",
-  "NEW_YORK_KNICKS": "NYK",
-  "OKLAHOMA_CITY_THUNDER": "OKC",
-  "ORLANDO_MAGIC": "ORL",
-  "PHILADELPHIA_76ERS": "PHI",
-  "PHOENIX_SUNS": "PHX",
-  "PORTLAND_TRAIL_BLAZERS": "POR",
-  "SACRAMENTO_KINGS": "SAC",
-  "SAN_ANTONIO_SPURS": "SAS",
-  "TORONTO_RAPTORS": "TOR",
-  "UTAH_JAZZ": "UTA",
-  "WASHINGTON_WIZARDS": "WAS"
-}
-
-const DUMMY_DATA_FASTAPI = [
-  {
-  "game_date_est": "2023-01-07T00:00:00",
-  "game_id": "0022200591",
-  "game_status_id": 3,
-  "home_team_id": 1610612759,
-  "visitor_team_id": 1610612738,
-  "live_period": 4,
-  "home_team": "SAS",
-  "visitor_team": "BOS",
-  "game_score": 3,
-  "game_tier": 2
-  },
-  {
-  "game_date_est": "2023-01-07T00:00:00",
-  "game_id": "0022200592",
-  "game_status_id": 3,
-  "home_team_id": 1610612741,
-  "visitor_team_id": 1610612762,
-  "live_period": 4,
-  "home_team": "CHI",
-  "visitor_team": "UTA",
-  "game_score": 3,
-  "game_tier": 2
-  },
-  {
-  "game_date_est": "2023-01-07T00:00:00",
-  "game_id": "0022200593",
-  "game_status_id": 3,
-  "home_team_id": 1610612742,
-  "visitor_team_id": 1610612740,
-  "live_period": 4,
-  "home_team": "DAL",
-  "visitor_team": "NOP",
-  "game_score": 0,
-  "game_tier": 3
-  },
-  {
-  "game_date_est": "2023-01-07T00:00:00",
-  "game_id": "0022200594",
-  "game_status_id": 3,
-  "home_team_id": 1610612744,
-  "visitor_team_id": 1610612753,
-  "live_period": 4,
-  "home_team": "GSW",
-  "visitor_team": "ORL",
-  "game_score": 0,
-  "game_tier": 3
-  },
-  {
-  "game_date_est": "2023-01-07T00:00:00",
-  "game_id": "0022200595",
-  "game_status_id": 3,
-  "home_team_id": 1610612758,
-  "visitor_team_id": 1610612747,
-  "live_period": 4,
-  "home_team": "SAC",
-  "visitor_team": "LAL",
-  "game_score": 9,
-  "game_tier": 1
-  }
-]
+// const DUMMY_DATA_FASTAPI = [
+//   {
+//   "game_date_est": "2023-01-07T00:00:00",
+//   "game_id": "0022200591",
+//   "game_status_id": 3,
+//   "home_team_id": 1610612759,
+//   "visitor_team_id": 1610612738,
+//   "live_period": 4,
+//   "home_team": "SAS",
+//   "visitor_team": "BOS",
+//   "game_score": 3,
+//   "game_tier": 2
+//   },
+//   {
+//   "game_date_est": "2023-01-07T00:00:00",
+//   "game_id": "0022200592",
+//   "game_status_id": 3,
+//   "home_team_id": 1610612741,
+//   "visitor_team_id": 1610612762,
+//   "live_period": 4,
+//   "home_team": "CHI",
+//   "visitor_team": "UTA",
+//   "game_score": 3,
+//   "game_tier": 2
+//   },
+//   {
+//   "game_date_est": "2023-01-07T00:00:00",
+//   "game_id": "0022200593",
+//   "game_status_id": 3,
+//   "home_team_id": 1610612742,
+//   "visitor_team_id": 1610612740,
+//   "live_period": 4,
+//   "home_team": "DAL",
+//   "visitor_team": "NOP",
+//   "game_score": 0,
+//   "game_tier": 3
+//   },
+//   {
+//   "game_date_est": "2023-01-07T00:00:00",
+//   "game_id": "0022200594",
+//   "game_status_id": 3,
+//   "home_team_id": 1610612744,
+//   "visitor_team_id": 1610612753,
+//   "live_period": 4,
+//   "home_team": "GSW",
+//   "visitor_team": "ORL",
+//   "game_score": 0,
+//   "game_tier": 3
+//   },
+//   {
+//   "game_date_est": "2023-01-07T00:00:00",
+//   "game_id": "0022200595",
+//   "game_status_id": 3,
+//   "home_team_id": 1610612758,
+//   "visitor_team_id": 1610612747,
+//   "live_period": 4,
+//   "home_team": "SAC",
+//   "visitor_team": "LAL",
+//   "game_score": 9,
+//   "game_tier": 1
+//   }
+// ]
 
 function MainHeader() {
   return (
@@ -110,13 +77,13 @@ function MainHeader() {
   )
 }
 
-function BackNextSeason() {
-  return (
-    <div className="placeholder">
-      <img src={backnextseason} alt="Back next season"/>
-    </div>
-  )
-}
+// function BackNextSeason() {
+//   return (
+//     <div className="placeholder">
+//       <img src={backnextseason} alt="Back next season"/>
+//     </div>
+//   )
+// }
 
 function SectionHeader(props) {
   return (
