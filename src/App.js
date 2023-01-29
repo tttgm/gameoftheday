@@ -225,6 +225,7 @@ class App extends React.Component {
       data: [],
       // data: DUMMY_DATA_FASTAPI,
       isLoading: false,
+      error: false,
       date: dateRange[dateRange.length - 1],
       // date: new Date('2020-09-03'),
       dateRange: dateRange,
@@ -246,7 +247,10 @@ class App extends React.Component {
     fetch(`https://gameoftheday-api.fly.dev/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false }))
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({isLoading: false, error: true});
+        console.log(err);
+      });
   }
 
   componentDidMount() {
@@ -284,7 +288,10 @@ class App extends React.Component {
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
             </>
           }
-          { (!this.state.isLoading)&&(this.state.data.length===0) ? 'No games found' : '' }
+          { (!this.state.isLoading)&&(this.state.data.length===0)&&(!this.state.error) ? 
+            <p>No games found</p> : '' }
+          { (!this.state.isLoading)&&(this.state.error) ? 
+            <p>Whoops! Something went wrong :(</p> : '' }
         </div>
         <div style={{fontSize: "smaller", clear: "both"}}>
           © 2023 (all rights reserved)
