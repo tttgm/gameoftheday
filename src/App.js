@@ -246,7 +246,7 @@ class App extends React.Component {
     // fetch(`http://127.0.0.1:8000/gotd/api/nba-games/2023-01-03`)
     fetch(`https://gameoftheday-api.fly.dev/gotd/api/nba-games/${ this.formatDate(date) }`)
       .then(res => res.json())
-      .then(data => this.setState({ data: data, isLoading: false }))
+      .then(data => this.setState({ data: data, isLoading: false, error: false }))
       .catch(err => {
         this.setState({isLoading: false, error: true});
         console.log(err);
@@ -280,9 +280,9 @@ class App extends React.Component {
               <p>Loading...</p>
             </> : 
             <>
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" />
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch"  />
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 3)} subtitle="Tier 3 - Can probably skip" />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 1 && game.game_status_id > 1)} subtitle="Tier 1 - Must watch" />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 2 && game.game_status_id > 1)} subtitle="Tier 2 - Worth a watch"  />
+              <TierBlock data={this.state.data.filter(game => game.game_tier === 3 && game.game_status_id > 1)} subtitle="Tier 3 - Can probably skip" />
               <StatusBlock data={this.state.data.filter(game => game.game_tier === "N/A")} subtitle="Waiting on data" />
               <StatusBlock data={this.state.data.filter(game => game.game_status_id === 1)} subtitle="Hasn't started yet" />
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
