@@ -248,7 +248,7 @@ class App extends React.Component {
       .then(res => res.json())
       .then(data => this.setState({ data: data, isLoading: false, error: false }))
       .catch(err => {
-        this.setState({isLoading: false, error: true});
+        this.setState({isLoading: false, error: true, data: []});
         console.log(err);
       });
   }
