@@ -283,7 +283,7 @@ class App extends React.Component {
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1 && game.game_status_id > 1)} subtitle="Tier 1 - Must watch" />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 2 && game.game_status_id > 1)} subtitle="Tier 2 - Worth a watch"  />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 3 && game.game_status_id > 1)} subtitle="Tier 3 - Can probably skip" />
-              <StatusBlock data={this.state.data.filter(game => game.game_tier === "N/A")} subtitle="Waiting on data" />
+              <StatusBlock data={this.state.data.filter(game => game.game_tier === "N/A" && game.game_status_id > 1)} subtitle="Waiting on data" />
               <StatusBlock data={this.state.data.filter(game => game.game_status_id === 1)} subtitle="Hasn't started yet" />
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
             </>
