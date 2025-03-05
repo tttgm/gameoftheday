@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/gameoftheday/static/css/main.85366f8d.css",
+    "main.js": "/gameoftheday/static/js/main.9fd189d6.js",
+    "static/media/bball-spin.gif": "/gameoftheday/static/media/bball-spin.8a1c58becb5451b2a685.gif",
+    "index.html": "/gameoftheday/index.html",
+    "static/media/chevrons-down.svg": "/gameoftheday/static/media/chevrons-down.09b3007f747c8788526b2be27980ba10.svg",
+    "main.85366f8d.css.map": "/gameoftheday/static/css/main.85366f8d.css.map",
+    "main.9fd189d6.js.map": "/gameoftheday/static/js/main.9fd189d6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.85366f8d.css",
+    "static/js/main.9fd189d6.js"
+  ]
+}
