@@ -221,11 +221,26 @@ class App extends React.Component {
               <p>Loading...</p>
             </> : 
             <>
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" />
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch"  />
-              <TierBlock data={this.state.data.filter(game => game.game_tier === 3)} subtitle="Tier 3 - Can probably skip" />
-              <StatusBlock data={this.state.data.filter(game => (game.game_tier === "N/A" || game.game_tier === undefined) && (new Date(game.game_date_est) >= this.state.easternTimeNow))} subtitle="Waiting on data" />
-              <StatusBlock data={this.state.data.filter(game => game.game_tier === undefined || new Date(game.game_date_est) < this.state.easternTimeNow)} subtitle="Hasn't started yet" />
+              <TierBlock
+                data={this.state.data.filter(game => game.game_tier === 1)}
+                subtitle="Tier 1 - Must watch"
+              />
+              <TierBlock
+                data={this.state.data.filter(game => game.game_tier === 2)}
+                subtitle="Tier 2 - Worth a watch"
+              />
+              <TierBlock
+                data={this.state.data.filter(game => game.game_tier === 3)}
+                subtitle="Tier 3 - Can probably skip"
+              />
+              <StatusBlock
+                data={this.state.data.filter(game => game.game_tier === "N/A")}
+                subtitle="Waiting on data"
+              />
+              <StatusBlock
+                data={this.state.data.filter(game => game.game_tier === undefined && new Date(game.game_date_est) < this.state.easternTimeNow)}
+                subtitle="Hasn't started yet"
+              />
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
             </>
           }
