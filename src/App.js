@@ -158,6 +158,9 @@ class App extends React.Component {
     dateRange.reverse();
     // console.log(dateRange);
 
+    const now = new Date();
+    const easternTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+
     this.state = {
       data: [],
       // data: DUMMY_DATA_FASTAPI,
@@ -166,6 +169,7 @@ class App extends React.Component {
       date: dateRange[dateRange.length - 1],
       // date: new Date('2020-09-03'),
       dateRange: dateRange,
+      easternTimeNow: easternTime,
     };
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
@@ -220,8 +224,8 @@ class App extends React.Component {
               <TierBlock data={this.state.data.filter(game => game.game_tier === 1)} subtitle="Tier 1 - Must watch" />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 2)} subtitle="Tier 2 - Worth a watch"  />
               <TierBlock data={this.state.data.filter(game => game.game_tier === 3)} subtitle="Tier 3 - Can probably skip" />
-              <StatusBlock data={this.state.data.filter(game => game.game_tier === "N/A")} subtitle="Waiting on data" />
-              <StatusBlock data={this.state.data.filter(game => game.game_tier === undefined)} subtitle="Hasn't started yet" />
+              <StatusBlock data={this.state.data.filter(game => (game.game_tier === "N/A" || game.game_tier === undefined) && (new Date(game.game_date_est) >= this.state.easternTimeNow))} subtitle="Waiting on data" />
+              <StatusBlock data={this.state.data.filter(game => game.game_tier === undefined || new Date(game.game_date_est) < this.state.easternTimeNow)} subtitle="Hasn't started yet" />
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
             </>
           }
