@@ -238,7 +238,7 @@ class App extends React.Component {
                 subtitle="Waiting on data"
               />
               <StatusBlock
-                data={this.state.data.filter(game => game.game_tier === undefined && new Date(game.game_date_est) < this.state.easternTimeNow)}
+                data={this.state.data.filter(game => game.game_tier === undefined && new Date(Date(game.game_time_utc).toLocaleString("en-US", {timeZone: "America/New_York"})) > this.state.easternTimeNow)}
                 subtitle="Hasn't started yet"
               />
               {/* <StatusBlock data={this.state.data.filter(game => game.status === "invalid-data")} subtitle="Oops! Couldn't figure it out" status="invalid-data" /> */}
@@ -250,7 +250,7 @@ class App extends React.Component {
             <p>Whoops! Something went wrong :(</p> : '' }
         </div>
         <div style={{fontSize: "smaller", clear: "both"}}>
-          © 2025 (all rights reserved)
+          © 2026 (all rights reserved)
         </div>
       </div>
     )
